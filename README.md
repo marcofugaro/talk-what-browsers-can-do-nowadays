@@ -4,7 +4,6 @@
 
 ## [SLIDES HERE](https://slides.com/marcofugaro/what-browsers-can-do-nowadays/)
 
+![](wordart-titles/vibration.png)
 
 Wordart done using [makewordart.com](https://makewordart.com/)
-
-![](wordart-titles/vibration.png)
