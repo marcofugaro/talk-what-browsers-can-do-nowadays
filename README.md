@@ -7,4 +7,4 @@
 
 Wordart done using [makewordart.com](https://makewordart.com/)
 
-![](wordart titles/vibration.png)
+![](wordart-titles/vibration.png)
