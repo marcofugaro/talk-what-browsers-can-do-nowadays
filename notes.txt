@@ -1,0 +1,337 @@
+- websites vs webapp
+websites are not only webpages anymore, they are evolved, more ways the user can interact with it, 
+
+- offline (download only first time, use also offline in metro) [ronco popper]
+
+OK
+
+
+const registration = await navigator.serviceWorker.register('/sw.js')
+
+
+// inside sw.js
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open('v1').then((cache) => {
+      return cache.addAll([
+        '/index.html',
+        '/style.css',
+        '/app.js',
+        '/image-list.js',
+        '/cacca.jpg',
+        '/gallery/',
+        '/gallery/bountyHunters.jpg',
+        '/gallery/myLittleVader.jpg',
+        '/gallery/snowTroopers.jpg'
+      ])
+    })
+  )
+})
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request)
+  )
+})
+
+
+- push notifications (something is ready, purchase confirm) [https://developers.google.com/web/fundamentals/push-notifications/ + screenshot]
+
+NO SAFARI
+
+await Notification.requestPermission()
+
+const img = '/to-do-notifications/img/icon-128.png'
+const text = 'HEY! Your task is now overdue.'
+const notification = new Notification('To do list', { body: text, icon: img })
+
+setTimeout(() => {
+  notification.close()  
+}, 5000)
+
+- Geofenced Notifications (enter endangered area, enter home) [you entered terronia] 
+
+NO
+
+
+const registration = await navigator.serviceWorker.register('/sw.js')
+
+const region = new CircularGeofenceRegion({
+  name: 'home',
+  latitude: 37.421999,
+  longitude: -122.084015,
+  radius: 1000
+})
+
+registration.geofencing.add(region)
+
+
+// inside sw.js
+
+self.ongeofenceenter = (event) => {
+
+}
+
+
+- Fullscreen Mode (games) [ronco popper]
+
+YES
+
+{
+  "name": "Weather",
+  "icons": [{
+    "src": "images/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }],
+  "start_url": "/index.html",
+  "display": "standalone", // <-----------
+  "background_color": "#3E4EB8",
+  "theme_color": "#2F3BA2"
+}
+
+
+- Background Sync (send boobs from offline and exit) [https://developers.google.com/web/updates/2015/12/background-sync + boobs]
+
+NO SAFARI 
+
+
+
+const registration = await navigator.serviceWorker.register('/sw.js')
+registration.sync.register('mySync')
+
+
+// inside sw.js
+
+self.addEventListener('sync', function(event) {
+  event.waitUntil(doSomeStuff()) // doSomeStuff is a promise
+})
+
+- IndexedDB (nosql asyncronous localStorage) (download once a lot of static data) [really busy viz, with a lot of points, dataisbeautifuli]
+
+YES
+
+import idb from 'idb'
+
+// super complicated
+
+- WebRTC (videochiamate, multiplayer games (agar, slither)) [pooping wideocalls]
+
+YES
+
+// super complicated
+
+- Geolocation (without internet, map) [belsedere]
+
+YES
+
+navigator.geolocation.getCurrentPosition((position) => {
+  console.log(position.coords.latitude, position.coords.longitude)
+})
+
+navigator.geolocation.watchPosition((position) => {
+  console.log(position.coords.latitude, position.coords.longitude)
+})
+
+- WebUSB (usb credentials, control arduino from website and reverse, draw to website) [https://twitter.com/samccone/status/1014962402826153984]
+
+ONLY CHROME
+
+const devices = await navigator.usb.getDevices()
+
+devices.forEach(device => {
+  console.log(device.productName)      // "Arduino Micro"
+  console.log(device.manufacturerName) // "Arduino LLC"
+})
+
+- Web Bluetooth (iot, bluetooth light) [flush toilets of weshit app]
+
+ONLY CHROME 
+
+
+const device = navigator.bluetooth.requestDevice({ filters: [{ name: ['Electronic toilet'] }] })
+
+- WebNFC (metro)  []
+
+NO 
+
+navigator.nfc.watch((message) => {
+  
+})
+
+- Accelerometer & Gyroscope (VR & 3d scans) [https://apelido-apelido.com/]
+
+YES
+
+window.addEventListener('deviceorientation', (event) => {
+  // device orientation
+  const alpha = event.alpha
+  const beta = event.beta
+  const gamma = event.gamma
+
+})
+
+window.addEventListener("devicemotion", (event) => {
+  const x = event.acceleration.x
+  const y = event.acceleration.y
+  const z = event.acceleration.z
+})
+
+- Wake Lock Api (navigation) [intercourse, california]
+
+NO
+
+const wakeLock = await navigator.getWakeLock('screen')
+const request = wakeLock.createRequest()
+
+
+- Web Share Api (whatsapp) [https://www.i-programmer.info/images/stories/News/2017/sept/A/webshareapi.JPG]
+
+NO SAFARI
+
+navigator.share({
+  title: 'Web Fundamentals',
+  text: 'Check out Web Fundamentals — it rocks!',
+  url: 'https://developers.google.com/web',
+})
+
+
+- Web Payments (ecommerce) [https://developers.google.com/web/fundamentals/payments/images/5_9_payment_request_ui.png, gallon of lube]
+
+ONLY CHROME
+
+new PaymentRequest(
+  [
+    {
+      supportedMethods: 'basic-card',
+    }
+  ],
+  {
+    total: {
+      label: 'Total',
+      amount:{
+        currency: 'USD',
+        value: 100
+      }
+    }
+  },
+)
+
+
+- Ambient Light (adjust color contrast to the current light)
+
+NO 
+
+window.addEventListener('devicelight', (event) => {
+  const body = document.querySelector('body')
+
+  if (event.value < 50) {
+    body.classList.add('darktheme')
+  } else {
+    body.classList.remove('darktheme')
+  }
+})
+
+- WebAssembly (autocad, webflow)
+
+YES
+
+const res = fetch('simple.wasm')
+const bytes = await res.arrayBuffer()
+const results = await WebAssembly.instantiate(bytes, {
+  imports: { imported_func: arg => console.log(arg) }
+})
+results.instance.exports.exported_func()
+
+
+- CSS Blend Modes (weird graphics) [zanza] [https://codepen.io/marco_fugaro/full/VBWaWK/] [https://twitter.com/mbostock/status/999410594674442240]
+
+YES
+
+h1 {
+  mix-blend-mode: multiply;
+}
+
+- Audio & Video Capture (face recognition, applemoji) [https://www.youtube.com/watch?v=Q8QlNuTUe4M] 
+
+YES
+
+https://github.com/noopkat/face-api-emoji-face
+
+const stream = navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+video.src = window.URL.createObjectURL(stream)
+video.play()
+
+- Web Speech Api (say text, google assistant) [antistress app]
+
+YES
+
+const recognition = new SpeechRecognition()
+const speechRecognitionList = new SpeechGrammarList()
+recognition.grammars = speechRecognitionList
+recognition.lang = 'en-US'
+recognition.interimResults = false
+recognition.maxAlternatives = 1
+
+recognition.start()
+
+recognition.onresult = function(event) {
+  const last = event.results.length - 1
+  const transcript = event.results[last][0].transcript
+}
+
+- Web Vibration [vibrator]
+
+YES
+
+navigator.vibrate(60000)
+
+- Network State & Speed (optimize based on velocity) []
+
+ONLY CHROME
+
+navigator.connection.type // 'wi-fi' or 'cellular'
+navigator.connection.effectiveType // '3g' or '4g'..
+navigator.connection.downlink // MB/s
+
+
+- Battery (notify on low battery, do work only if battery is enough)
+
+ONLY CHROME
+
+const battery = await navigator.getBattery()
+battery.level // 100
+
+- Device Memory Api (optimize for low-end devices) [download more ram]
+
+NO SAFARI
+
+navigator.deviceMemory // how much RAM in gigabites
+
+- Screen Orientation (become fullscreen when orientation changes)
+
+NO SAFARI
+
+const orientation = window.screen.orientation // 'landscape-primary', 'landscape-secondary', 'portrait-secondary', 'portrait-primary'
+
+- Gamepad Api (games) [bombersquad with controller]
+
+NO SAFARI
+
+window.addEventListener('gamepadconnected', (e) => {
+  const gp = navigator.getGamepads()[e.gamepad.index]
+  gb.buttons[0].pressed // true or false
+});
+
+- WebXR (ar fallbacks to vr) DETAIIILS [shrimp drop]
+
+ONLY CHROME
+
+const device = await navigator.xr.requestDevice()
+device.supportsSession({ environmentIntegration: true, outputContext: ctx }).then(() => {
+  xrButton.setDevice(device)
+})
+// ... low level
+
+
